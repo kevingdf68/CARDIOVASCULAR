@@ -31,14 +31,14 @@ def set_background(image_file="fundo.png"):
 # CONFIGURAÇÃO DA PÁGINA
 # =========================================================
 
-st.markdown(
-    """
-    <h1 style='text-align:center; color:black;'>
-        ❤️ Triagem Inicial de Risco Cardiovascular
-    </h1>
-    """,
-    unsafe_allow_html=True
+st.set_page_config(
+    page_title="Triagem de Risco Cardiovascular",
+    page_icon="❤️",
+    layout="centered"
 )
+
+set_background()
+
 # =========================================================
 # ESTILO DA PÁGINA
 # =========================================================
@@ -119,45 +119,12 @@ input::placeholder {
 
 </style>
 """, unsafe_allow_html=True)
-st.markdown("""
-<style>
 
-/* Botão */
-
-.stButton > button {
-    background: linear-gradient(90deg,#0b4f7d,#1f7acb) !important;
-    color: white !important;
-    font-size: 22px !important;
-    font-weight: 700 !important;
-    border-radius: 15px !important;
-    height: 60px !important;
-    width: 100% !important;
-    border: none !important;
-}
-
-/* Texto interno do botão */
-
-.stButton > button p {
-    color: white !important;
-    font-weight: 700 !important;
-}
-
-/* Hover */
-
-.stButton > button:hover {
-    color: white !important;
-}
-
-.stButton > button:hover p {
-    color: white !important;
-}
-
-</style>
-""", unsafe_allow_html=True)
 # =========================================================
 # TÍTULO
 # =========================================================
 
+st.title("Triagem Inicial de Risco Cardiovascular")
 
 st.write("""
 Este sistema realiza uma triagem inicial de risco cardiovascular com base
