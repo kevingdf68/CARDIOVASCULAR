@@ -158,7 +158,6 @@ st.markdown("""
 # TÍTULO
 # =========================================================
 
-st.title("Triagem Inicial de Risco Cardiovascular")
 
 st.write("""
 Este sistema realiza uma triagem inicial de risco cardiovascular com base
