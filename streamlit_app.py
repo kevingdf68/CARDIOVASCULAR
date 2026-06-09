@@ -208,31 +208,42 @@ if st.button("Calcular risco cardiovascular"):
     st.write(f"Paciente: **{nome}**")
     st.write(f"Pontuação de risco: **{score} pontos**")
 
-    if score <= 7:
+ if score <= 7:
 
-        st.success("🟢 Baixo risco cardiovascular")
+    st.image(
+        "baixo_risco.png",
+        use_container_width=True
+    )
 
-        st.write("""
-        Recomenda-se manter hábitos saudáveis e realizar check-up de rotina.
-        """)
+    st.success("🟢 Baixo risco cardiovascular")
 
-    elif score <= 15:
+    st.write("""
+    Recomenda-se manter hábitos saudáveis e realizar check-up de rotina.
+    """)
 
-        st.warning("🟡 Médio risco cardiovascular")
+elif score <= 15:
 
-        st.write("""
-        Recomenda-se realizar um novo check-up e,
-        se possível, consultar um cardiologista.
-        """)
+    st.image(
+        "medio_risco.png",
+        use_container_width=True
+    )
 
-    else:
+    st.warning("🟡 Médio risco cardiovascular")
 
-        st.error("🔴 Alto risco cardiovascular")
+    st.write("""
+    Recomenda-se realizar um novo check-up e,
+    se possível, consultar um cardiologista.
+    """)
 
-        st.write("""
-        Recomenda-se procurar um cardiologista o mais rápido possível.
-        """)
+else:
 
-    st.info("""
-    Este resultado é apenas uma triagem inicial e não representa diagnóstico médico.
+    st.image(
+        "alto_risco.png",
+        use_container_width=True
+    )
+
+    st.error("🔴 Alto risco cardiovascular")
+
+    st.write("""
+    Recomenda-se procurar um cardiologista o mais rápido possível.
     """)
