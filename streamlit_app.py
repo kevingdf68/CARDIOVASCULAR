@@ -31,16 +31,14 @@ def set_background(image_file="fundo.png"):
 # CONFIGURAÇÃO DA PÁGINA
 # =========================================================
 
-st.set_page_config(
-    page_title="Triagem de Risco Cardiovascular",
-    page_icon="❤️",
-    layout="centered"
+st.markdown(
+    """
+    <h1 style='text-align:center; color:black;'>
+        ❤️ Triagem Inicial de Risco Cardiovascular
+    </h1>
+    """,
+    unsafe_allow_html=True
 )
-
-st.title("❤️ Triagem Inicial de Risco Cardiovascular")
-
-set_background()
-
 # =========================================================
 # ESTILO DA PÁGINA
 # =========================================================
