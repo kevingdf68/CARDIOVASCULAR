@@ -199,16 +199,17 @@ if st.button("Calcular risco cardiovascular"):
     elif sono == "Frequentemente":
         score += 2
 
-    # =====================================================
-    # RESULTADO
-    # =====================================================
+# =====================================================
+# RESULTADO
+# =====================================================
 
-    st.subheader("Resultado da Triagem")
+st.subheader("Resultado da Triagem")
 
-    st.write(f"Paciente: **{nome}**")
-    st.write(f"Pontuação de risco: **{score} pontos**")
+st.write(f"Paciente: **{nome}**")
+st.write(f"Pontuação de risco: **{score} pontos**")
 
- if score <= 7:
+if score <= 7:
+
     st.image(
         "baixo_risco.png",
         use_container_width=True
@@ -246,3 +247,7 @@ else:
     st.write("""
     Recomenda-se procurar um cardiologista o mais rápido possível.
     """)
+
+st.info("""
+Este resultado é apenas uma triagem inicial e não representa diagnóstico médico.
+""")
