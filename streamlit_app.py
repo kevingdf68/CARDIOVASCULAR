@@ -1,198 +1,174 @@
 import streamlit as st
-import pandas as pd
-
-from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score
-
-# ==============================
-# CONFIGURAÇÃO DA PÁGINA
-# ==============================
 
 st.set_page_config(
-    page_title="Risco Cardiovascular",
+    page_title="Triagem de Risco Cardiovascular",
     page_icon="❤️",
     layout="centered"
 )
 
-# ==============================
-# TÍTULO
-# ==============================
-
-st.title("Sistema de Predição de Risco Cardiovascular")
+st.title("Triagem Inicial de Risco Cardiovascular")
 
 st.write("""
-Este protótipo utiliza Inteligência Artificial para estimar o risco cardiovascular
-com base em dados clínicos do paciente.
+Este sistema realiza uma triagem inicial de risco cardiovascular com base em perguntas simples
+sobre sintomas, histórico familiar e hábitos de vida.
 """)
 
-# ==============================
-# CARREGAMENTO DO DATASET
-# ==============================
+st.warning("""
+Este sistema é apenas um protótipo acadêmico e não substitui avaliação médica profissional.
+""")
 
-df = pd.read_csv("heart (1).csv")
+st.subheader("Informe seus dados")
 
-df = df.drop_duplicates()
+nome = st.text_input("1. Nome")
 
-X = df.drop("target", axis=1)
-y = df["target"]
-
-# ==============================
-# DIVISÃO DOS DADOS
-# ==============================
-
-X_train, X_test, y_train, y_test = train_test_split(
-    X,
-    y,
-    test_size=0.2,
-    random_state=42
-)
-
-# ==============================
-# TREINAMENTO DO MODELO
-# ==============================
-
-modelo_rf = RandomForestClassifier(
-    n_estimators=100,
-    random_state=42
-)
-
-modelo_rf.fit(X_train, y_train)
-
-pred_rf = modelo_rf.predict(X_test)
-accuracy = accuracy_score(y_test, pred_rf)
-
-# ==============================
-# INFORMAÇÃO DO MODELO
-# ==============================
-
-st.info(f"Modelo utilizado: Random Forest | Acurácia aproximada: {accuracy:.2%}")
-
-# ==============================
-# FORMULÁRIO DE ENTRADA
-# ==============================
-
-st.subheader("Informe os dados do paciente")
-
-age = st.number_input(
-    "Idade",
+idade = st.number_input(
+    "2. Idade",
     min_value=1,
     max_value=120,
-    value=50
+    value=20
 )
 
-sex = st.selectbox(
-    "Sexo",
-    options=[0, 1],
-    format_func=lambda x: "Feminino" if x == 0 else "Masculino"
+genero = st.selectbox(
+    "3. Gênero",
+    ["Feminino", "Masculino", "Outro / Prefiro não informar"]
 )
 
-cp = st.selectbox(
-    "Tipo de dor no peito",
-    options=[0, 1, 2, 3],
-    format_func=lambda x: {
-        0: "0 - Assintomática",
-        1: "1 - Angina típica",
-        2: "2 - Angina atípica",
-        3: "3 - Dor não anginosa"
-    }[x]
+dor_peito = st.selectbox(
+    "4. Teve dor no peito nos últimos 30 dias?",
+    ["Não", "Sim, leve", "Sim, moderada", "Sim, forte"]
 )
 
-trestbps = st.number_input(
-    "Pressão arterial em repouso",
-    min_value=80,
-    max_value=220,
-    value=120
+historico_familiar = st.selectbox(
+    "5. Tem histórico de doença cardiovascular na família?",
+    ["Não", "Sim", "Não sei"]
 )
 
-chol = st.number_input(
-    "Colesterol",
-    min_value=100,
-    max_value=600,
-    value=200
+exercicio = st.selectbox(
+    "6. Você pratica exercícios físicos?",
+    [
+        "Não pratico",
+        "Sim, 1 a 2 vezes por semana",
+        "Sim, 3 a 4 vezes por semana",
+        "Sim, 5 vezes ou mais por semana"
+    ]
 )
 
-fbs = st.selectbox(
-    "Glicemia em jejum maior que 120 mg/dl?",
-    options=[0, 1],
-    format_func=lambda x: "Não" if x == 0 else "Sim"
+alimentacao = st.selectbox(
+    "7. Em um almoço comum no seu dia a dia, qual opção melhor te atende?",
+    [
+        "Refeição equilibrada com verduras, legumes, proteína e carboidrato",
+        "Refeição comum, mas com pouca verdura ou legumes",
+        "Muita fritura, gordura, fast food ou ultraprocessados",
+        "Costumo pular refeições ou comer de forma desregulada"
+    ]
 )
 
-restecg = st.selectbox(
-    "Resultado do eletrocardiograma",
-    options=[0, 1, 2]
+cigarro = st.selectbox(
+    "8. Você faz uso de cigarro?",
+    [
+        "Não",
+        "Sim, raramente",
+        "Sim, algumas vezes por semana",
+        "Sim, todos os dias"
+    ]
 )
 
-thalach = st.number_input(
-    "Frequência cardíaca máxima",
-    min_value=60,
-    max_value=250,
-    value=150
+alcool = st.selectbox(
+    "9. Você faz uso de bebida alcoólica?",
+    [
+        "Não",
+        "Sim, raramente",
+        "Sim, algumas vezes por semana",
+        "Sim, todos os dias"
+    ]
 )
 
-exang = st.selectbox(
-    "Angina induzida por exercício?",
-    options=[0, 1],
-    format_func=lambda x: "Não" if x == 0 else "Sim"
+ansiedade = st.selectbox(
+    "10. Você tem se sentido ansioso frequentemente?",
+    ["Não", "Às vezes", "Frequentemente"]
 )
 
-oldpeak = st.number_input(
-    "Oldpeak",
-    min_value=0.0,
-    max_value=10.0,
-    value=1.0,
-    step=0.1
+sono = st.selectbox(
+    "11. Você está tendo dificuldades para dormir?",
+    ["Não", "Às vezes", "Frequentemente"]
 )
 
-slope = st.selectbox(
-    "Inclinação do segmento ST",
-    options=[0, 1, 2]
-)
+if st.button("Calcular risco cardiovascular"):
 
-ca = st.selectbox(
-    "Número de vasos principais",
-    options=[0, 1, 2, 3, 4]
-)
+    score = 0
 
-thal = st.selectbox(
-    "Resultado do teste Thal",
-    options=[0, 1, 2, 3]
-)
+    if idade >= 60:
+        score += 3
+    elif idade >= 45:
+        score += 2
+    elif idade >= 30:
+        score += 1
 
-# ==============================
-# PREVISÃO
-# ==============================
+    if dor_peito == "Sim, leve":
+        score += 2
+    elif dor_peito == "Sim, moderada":
+        score += 4
+    elif dor_peito == "Sim, forte":
+        score += 6
 
-if st.button("Prever risco cardiovascular"):
+    if historico_familiar == "Sim":
+        score += 3
+    elif historico_familiar == "Não sei":
+        score += 1
 
-    dados_paciente = pd.DataFrame([{
-        "age": age,
-        "sex": sex,
-        "cp": cp,
-        "trestbps": trestbps,
-        "chol": chol,
-        "fbs": fbs,
-        "restecg": restecg,
-        "thalach": thalach,
-        "exang": exang,
-        "oldpeak": oldpeak,
-        "slope": slope,
-        "ca": ca,
-        "thal": thal
-    }])
+    if exercicio == "Não pratico":
+        score += 3
+    elif exercicio == "Sim, 1 a 2 vezes por semana":
+        score += 1
 
-    previsao = modelo_rf.predict(dados_paciente)[0]
-    probabilidade = modelo_rf.predict_proba(dados_paciente)[0][1]
+    if alimentacao == "Refeição comum, mas com pouca verdura ou legumes":
+        score += 1
+    elif alimentacao == "Muita fritura, gordura, fast food ou ultraprocessados":
+        score += 3
+    elif alimentacao == "Costumo pular refeições ou comer de forma desregulada":
+        score += 2
 
-    st.subheader("Resultado da Predição")
+    if cigarro == "Sim, raramente":
+        score += 1
+    elif cigarro == "Sim, algumas vezes por semana":
+        score += 3
+    elif cigarro == "Sim, todos os dias":
+        score += 5
 
-    if previsao == 1:
-        st.error("Alto risco cardiovascular")
-    else:
+    if alcool == "Sim, raramente":
+        score += 1
+    elif alcool == "Sim, algumas vezes por semana":
+        score += 2
+    elif alcool == "Sim, todos os dias":
+        score += 3
+
+    if ansiedade == "Às vezes":
+        score += 1
+    elif ansiedade == "Frequentemente":
+        score += 2
+
+    if sono == "Às vezes":
+        score += 1
+    elif sono == "Frequentemente":
+        score += 2
+
+    st.subheader("Resultado da triagem")
+
+    st.write(f"Paciente: **{nome}**")
+    st.write(f"Pontuação de risco: **{score} pontos**")
+
+    if score <= 7:
         st.success("Baixo risco cardiovascular")
+        st.write("Recomenda-se manter hábitos saudáveis e realizar check-up de rotina.")
 
-    st.write(f"Probabilidade estimada de risco: {probabilidade:.2%}")
+    elif score <= 15:
+        st.warning("Médio risco cardiovascular")
+        st.write("Recomenda-se realizar um novo check-up e, se possível, consultar um cardiologista.")
 
-    st.warning("""
-Este sistema é apenas um protótipo acadêmico e não substitui avaliação médica profissional.
+    else:
+        st.error("Alto risco cardiovascular")
+        st.write("Recomenda-se procurar um cardiologista o mais rápido possível.")
+
+    st.info("""
+O resultado é baseado em uma pontuação de triagem e não representa diagnóstico médico.
 """)
