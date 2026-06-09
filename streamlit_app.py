@@ -209,7 +209,6 @@ if st.button("Calcular risco cardiovascular"):
     st.write(f"Pontuação de risco: **{score} pontos**")
 
  if score <= 7:
-
     st.image(
         "baixo_risco.png",
         use_container_width=True
