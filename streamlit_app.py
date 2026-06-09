@@ -1,4 +1,23 @@
 import streamlit as st
+def set_background():
+
+    with open("fundo.png", "rb") as image:
+        encoded = base64.b64encode(image.read()).decode()
+
+    st.markdown(
+        f"""
+        <style>
+        .stApp {{
+            background-image: url("data:image/png;base64,{encoded}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }}
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
 # =========================================================
 # CONFIGURAÇÃO DA PÁGINA
 # =========================================================
@@ -8,6 +27,8 @@ st.set_page_config(
     page_icon="❤️",
     layout="centered"
 )
+
+set_background()
 
 # =========================================================
 # TÍTULO
