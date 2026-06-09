@@ -236,4 +236,3 @@ if st.button("Calcular risco cardiovascular"):
     st.info("""
     Este resultado é apenas uma triagem inicial e não representa diagnóstico médico.
     """)
-```
