@@ -119,7 +119,30 @@ input::placeholder {
 
 </style>
 """, unsafe_allow_html=True)
+st.markdown("""
+<style>
 
+.stButton > button {
+
+    background: linear-gradient(90deg,#0b4f7d,#1f7acb) !important;
+
+    color: white !important;
+
+    font-size: 22px !important;
+
+    font-weight: 700 !important;
+
+    border-radius: 15px !important;
+
+    height: 60px !important;
+
+    width: 100% !important;
+
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.25) !important;
+}
+
+</style>
+""", unsafe_allow_html=True)
 # =========================================================
 # TÍTULO
 # =========================================================
