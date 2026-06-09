@@ -56,10 +56,10 @@ exercicio = st.selectbox(
 alimentacao = st.selectbox(
     "7. Em um almoço comum no seu dia a dia, qual opção melhor te atende?",
     [
-        "Refeição equilibrada com verduras, legumes, proteína e carboidrato",
-        "Refeição comum, mas com pouca verdura ou legumes",
-        "Muita fritura, gordura, fast food ou ultraprocessados",
-        "Costumo pular refeições ou comer de forma desregulada"
+        "Arroz, feijão, salada e frango",
+        "Macarrão, carne e molho de tomate",
+        "Fast food (cachorro-quente, hambúrguer, pizza, etc.)",
+        "Parmegiana de frango"
     ]
 )
 
@@ -121,12 +121,14 @@ if st.button("Calcular risco cardiovascular"):
     elif exercicio == "Sim, 1 a 2 vezes por semana":
         score += 1
 
-    if alimentacao == "Refeição comum, mas com pouca verdura ou legumes":
-        score += 1
-    elif alimentacao == "Muita fritura, gordura, fast food ou ultraprocessados":
-        score += 3
-    elif alimentacao == "Costumo pular refeições ou comer de forma desregulada":
-        score += 2
+   if alimentacao == "Macarrão, carne e molho de tomate":
+    score += 1
+
+elif alimentacao == "Parmegiana de frango":
+    score += 2
+
+elif alimentacao == "Fast food (cachorro-quente, hambúrguer, pizza, etc.)":
+    score += 4
 
     if cigarro == "Sim, raramente":
         score += 1
