@@ -33,7 +33,7 @@ def set_background(image_file="fundo.png"):
 
 st.set_page_config(
     page_title="Triagem de Risco Cardiovascular",
-    page_icon="❤️",
+    page_icon="",
     layout="centered"
 )
 
