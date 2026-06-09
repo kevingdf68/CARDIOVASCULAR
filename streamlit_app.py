@@ -32,10 +32,12 @@ def set_background(image_file="fundo.png"):
 # =========================================================
 
 st.set_page_config(
-   st.title("❤️ Triagem Inicial de Risco Cardiovascular")
+    page_title="Triagem de Risco Cardiovascular",
     page_icon="❤️",
     layout="centered"
 )
+
+st.title("❤️ Triagem Inicial de Risco Cardiovascular")
 
 set_background()
 
