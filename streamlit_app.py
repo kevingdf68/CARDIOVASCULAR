@@ -74,7 +74,7 @@ p, span, div {
 /* Inputs */
 .stTextInput input,
 .stNumberInput input {
-    color: black !important;
+    color: white !important;
 }
 
 /* Selectbox */
@@ -110,6 +110,72 @@ st.markdown("""
 /* Placeholder */
 input::placeholder {
     color: rgba(255,255,255,0.8) !important;
+}
+
+</style>
+""", unsafe_allow_html=True)
+st.markdown("""
+<style>
+
+/* ======================================
+   TEXT INPUT
+====================================== */
+
+.stTextInput input {
+    color: white !important;
+    background-color: rgba(20,30,50,0.90) !important;
+}
+
+/* ======================================
+   NUMBER INPUT
+====================================== */
+
+.stNumberInput input {
+    color: white !important;
+    background-color: rgba(20,30,50,0.90) !important;
+}
+
+/* ======================================
+   SELECTBOX
+====================================== */
+
+[data-baseweb="select"] {
+    background-color: rgba(20,30,50,0.90) !important;
+}
+
+/* Texto da opção selecionada */
+
+[data-baseweb="select"] span {
+    color: white !important;
+}
+
+/* ======================================
+   DROPDOWN
+====================================== */
+
+ul[role="listbox"] {
+    background-color: rgba(20,30,50,0.95) !important;
+}
+
+ul[role="listbox"] li {
+    color: white !important;
+}
+
+/* ======================================
+   PLACEHOLDER
+====================================== */
+
+input::placeholder {
+    color: rgba(255,255,255,0.8) !important;
+}
+
+/* ======================================
+   LABELS DAS PERGUNTAS
+====================================== */
+
+label {
+    color: black !important;
+    font-weight: 600 !important;
 }
 
 </style>
