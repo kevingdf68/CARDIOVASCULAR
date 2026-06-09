@@ -84,6 +84,36 @@ p, span, div {
 
 </style>
 """, unsafe_allow_html=True)
+st.markdown("""
+<style>
+
+/* Texto digitado nos inputs */
+.stTextInput input {
+    color: white !important;
+}
+
+/* Número */
+.stNumberInput input {
+    color: white !important;
+}
+
+/* Selectbox */
+[data-baseweb="select"] {
+    color: white !important;
+}
+
+/* Valor selecionado */
+[data-baseweb="select"] span {
+    color: white !important;
+}
+
+/* Placeholder */
+input::placeholder {
+    color: rgba(255,255,255,0.8) !important;
+}
+
+</style>
+""", unsafe_allow_html=True)
 
 # =========================================================
 # TÍTULO
