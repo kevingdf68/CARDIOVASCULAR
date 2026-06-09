@@ -5,24 +5,27 @@ import base64
 # FUNDO DA APLICAÇÃO
 # =========================================================
 
-def set_background():
-    with open("fundo.png", "rb") as image:
-        encoded = base64.b64encode(image.read()).decode()
+def set_background(image_file="fundo.png"):
+    try:
+        with open(image_file, "rb") as image:
+            encoded = base64.b64encode(image.read()).decode()
 
-    st.markdown(
-        f"""
-        <style>
-        .stApp {{
-            background-image: url("data:image/png;base64,{encoded}");
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-        }}
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
+        st.markdown(
+            f"""
+            <style>
+            .stApp {{
+                background-image: url("data:image/png;base64,{encoded}");
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;
+                background-attachment: fixed;
+            }}
+            </style>
+            """,
+            unsafe_allow_html=True
+        )
+    except FileNotFoundError:
+        st.warning("Imagem de fundo não encontrada. Verifique se o arquivo 'fundo.png' está na mesma pasta do app.")
 
 # =========================================================
 # CONFIGURAÇÃO DA PÁGINA
@@ -37,7 +40,7 @@ st.set_page_config(
 set_background()
 
 # =========================================================
-# ESTILO DOS TEXTOS E CONTAINER
+# ESTILO DA PÁGINA
 # =========================================================
 
 st.markdown("""
@@ -50,60 +53,46 @@ st.markdown("""
     border-radius: 20px;
 }
 
-/* Texto geral */
-html, body, [class*="css"] {
+/* Textos principais pretos */
+html, body, [class*="css"],
+h1, h2, h3, h4, h5, h6,
+p, label {
     color: black !important;
 }
 
-/* Títulos */
-h1, h2, h3, h4, h5, h6 {
-    color: black !important;
-}
-
-/* Labels */
+/* Labels das perguntas */
 label {
-    color: black !important;
     font-weight: 600 !important;
 }
 
-/* Parágrafos e textos */
-p, span, div {
-    color: black !important;
-}
-
-/* Inputs */
+/* Campos preenchidos pelo usuário */
 .stTextInput input,
 .stNumberInput input {
     color: white !important;
+    background-color: rgba(20,30,50,0.90) !important;
+    border-radius: 10px !important;
 }
 
-/* Selectbox */
-.stSelectbox div {
-    color: black !important;
-}
-
-</style>
-""", unsafe_allow_html=True)
-st.markdown("""
-<style>
-
-/* Texto digitado nos inputs */
-.stTextInput input {
-    color: white !important;
-}
-
-/* Número */
-.stNumberInput input {
-    color: white !important;
-}
-
-/* Selectbox */
+/* Selectbox fechado */
 [data-baseweb="select"] {
+    background-color: rgba(20,30,50,0.90) !important;
+    border-radius: 10px !important;
+}
+
+/* Texto da opção selecionada */
+[data-baseweb="select"] span {
     color: white !important;
 }
 
-/* Valor selecionado */
-[data-baseweb="select"] span {
+/* Lista de opções aberta */
+ul[role="listbox"] {
+    background-color: rgba(20,30,50,0.95) !important;
+}
+
+/* Opções dentro do dropdown */
+ul[role="listbox"] li,
+ul[role="listbox"] li div,
+ul[role="listbox"] li span {
     color: white !important;
 }
 
@@ -112,70 +101,20 @@ input::placeholder {
     color: rgba(255,255,255,0.8) !important;
 }
 
-</style>
-""", unsafe_allow_html=True)
-st.markdown("""
-<style>
-
-/* ======================================
-   TEXT INPUT
-====================================== */
-
-.stTextInput input {
+/* Botão */
+.stButton button {
+    background-color: #0b3d5c !important;
     color: white !important;
-    background-color: rgba(20,30,50,0.90) !important;
+    border-radius: 10px !important;
+    font-weight: 700 !important;
+    border: none !important;
+    padding: 0.6rem 1rem !important;
 }
 
-/* ======================================
-   NUMBER INPUT
-====================================== */
-
-.stNumberInput input {
-    color: white !important;
-    background-color: rgba(20,30,50,0.90) !important;
-}
-
-/* ======================================
-   SELECTBOX
-====================================== */
-
-[data-baseweb="select"] {
-    background-color: rgba(20,30,50,0.90) !important;
-}
-
-/* Texto da opção selecionada */
-
-[data-baseweb="select"] span {
-    color: white !important;
-}
-
-/* ======================================
-   DROPDOWN
-====================================== */
-
-ul[role="listbox"] {
-    background-color: rgba(20,30,50,0.95) !important;
-}
-
-ul[role="listbox"] li {
-    color: white !important;
-}
-
-/* ======================================
-   PLACEHOLDER
-====================================== */
-
-input::placeholder {
-    color: rgba(255,255,255,0.8) !important;
-}
-
-/* ======================================
-   LABELS DAS PERGUNTAS
-====================================== */
-
-label {
+/* Texto dentro dos alertas */
+[data-testid="stAlert"] div,
+[data-testid="stAlert"] p {
     color: black !important;
-    font-weight: 600 !important;
 }
 
 </style>
@@ -305,6 +244,7 @@ if st.button("Calcular risco cardiovascular"):
 
     score = 0
 
+    # Idade
     if idade >= 60:
         score += 3
     elif idade >= 45:
@@ -312,6 +252,7 @@ if st.button("Calcular risco cardiovascular"):
     elif idade >= 30:
         score += 1
 
+    # Dor no peito
     if dor_peito == "Sim, leve":
         score += 2
     elif dor_peito == "Sim, moderada":
@@ -319,16 +260,19 @@ if st.button("Calcular risco cardiovascular"):
     elif dor_peito == "Sim, forte":
         score += 6
 
+    # Histórico familiar
     if historico_familiar == "Sim":
         score += 3
     elif historico_familiar == "Não sei":
         score += 1
 
+    # Exercício físico
     if exercicio == "Não pratico":
         score += 3
     elif exercicio == "Sim, 1 a 2 vezes por semana":
         score += 1
 
+    # Alimentação
     if alimentacao == "Macarrão, carne e molho de tomate":
         score += 1
     elif alimentacao == "Parmegiana de frango":
@@ -336,6 +280,7 @@ if st.button("Calcular risco cardiovascular"):
     elif alimentacao == "Fast food (cachorro-quente, hambúrguer, pizza, etc.)":
         score += 4
 
+    # Cigarro
     if cigarro == "Sim, raramente":
         score += 1
     elif cigarro == "Sim, algumas vezes por semana":
@@ -343,6 +288,7 @@ if st.button("Calcular risco cardiovascular"):
     elif cigarro == "Sim, todos os dias":
         score += 5
 
+    # Álcool
     if alcool == "Sim, raramente":
         score += 1
     elif alcool == "Sim, algumas vezes por semana":
@@ -350,11 +296,13 @@ if st.button("Calcular risco cardiovascular"):
     elif alcool == "Sim, todos os dias":
         score += 3
 
+    # Ansiedade
     if ansiedade == "Às vezes":
         score += 1
     elif ansiedade == "Frequentemente":
         score += 2
 
+    # Sono
     if sono == "Às vezes":
         score += 1
     elif sono == "Frequentemente":
@@ -366,24 +314,35 @@ if st.button("Calcular risco cardiovascular"):
 
     st.subheader("Resultado da Triagem")
 
-    st.write(f"Paciente: **{nome}**")
+    nome_exibicao = nome if nome.strip() else "Paciente"
+
+    st.write(f"Paciente: **{nome_exibicao}**")
     st.write(f"Pontuação de risco: **{score} pontos**")
 
     if score <= 7:
+        try:
+            st.image("baixo_risco.png", use_container_width=True)
+        except Exception:
+            pass
 
-        st.image("baixo_risco.png", use_container_width=True)
         st.success("Baixo risco cardiovascular")
         st.write("Recomenda-se manter hábitos saudáveis e realizar check-up de rotina.")
 
     elif score <= 15:
+        try:
+            st.image("medio_risco.png", use_container_width=True)
+        except Exception:
+            pass
 
-        st.image("medio_risco.png", use_container_width=True)
         st.warning("Médio risco cardiovascular")
         st.write("Recomenda-se realizar um novo check-up e, se possível, consultar um cardiologista.")
 
     else:
+        try:
+            st.image("alto_risco.png", use_container_width=True)
+        except Exception:
+            pass
 
-        st.image("alto_risco.png", use_container_width=True)
         st.error("Alto risco cardiovascular")
         st.write("Recomenda-se procurar um cardiologista o mais rápido possível.")
 
