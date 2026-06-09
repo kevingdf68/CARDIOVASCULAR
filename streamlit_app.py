@@ -32,7 +32,7 @@ def set_background(image_file="fundo.png"):
 # =========================================================
 
 st.set_page_config(
-    page_title="❤️Triagem de Risco Cardiovascular❤️",
+    page_title="Triagem de Risco Cardiovascular",
     page_icon="❤️",
     layout="centered"
 )
@@ -158,7 +158,7 @@ st.markdown("""
 # TÍTULO
 # =========================================================
 
-st.title("Triagem Inicial de Risco Cardiovascular")
+st.title("❤️Triagem Inicial de Risco Cardiovascular❤️")
 
 st.write("""
 Este sistema realiza uma triagem inicial de risco cardiovascular com base
