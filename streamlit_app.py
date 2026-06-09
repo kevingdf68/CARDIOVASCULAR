@@ -1,12 +1,21 @@
 import streamlit as st
+import base64
+
+# =====================================
+# FUNDO DA APLICAÇÃO
+# =====================================
+
 def set_background():
 
     with open("fundo.png", "rb") as image:
-        encoded = base64.b64encode(image.read()).decode()
+        encoded = base64.b64encode(
+            image.read()
+        ).decode()
 
     st.markdown(
         f"""
         <style>
+
         .stApp {{
             background-image: url("data:image/png;base64,{encoded}");
             background-size: cover;
@@ -14,6 +23,7 @@ def set_background():
             background-repeat: no-repeat;
             background-attachment: fixed;
         }}
+
         </style>
         """,
         unsafe_allow_html=True
