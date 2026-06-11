@@ -175,15 +175,17 @@ Este sistema é apenas um protótipo acadêmico e não substitui avaliação mé
 
 st.subheader("Informe seus dados")
 
-nome = st.text_input("1. Nome"),
-    index=None,
-    placeholder="Insira seu nome"
+nome = st.text_input(
+    "1. Nome",
+    placeholder="Digite seu nome"
+)
 
 idade = st.number_input(
     "2. Idade",
     min_value=1,
     max_value=120,
-    value=20
+    value=""
+)
 ),
     index=None,
     placeholder="Insira a idade conrrespondente"
@@ -298,8 +300,40 @@ sono = st.selectbox(
 
 if st.button("Calcular risco cardiovascular"):
 
+    if None in [
+        genero,
+        dor_peito,
+        historico_familiar,
+        exercicio,
+        alimentacao,
+        cigarro,
+        alcool,
+        ansiedade,
+        sono
+    ]:
+        st.error(
+            "Por favor, responda todas as perguntas antes de calcular o risco."
+        )
+        st.stop()
+
+    if nome.strip() == "":
+        st.error("Por favor, informe seu nome.")
+        st.stop()
+
+    if idade == 0:
+        st.error("Por favor, informe sua idade.")
+        st.stop()
+
     score = 0
 
+    # Idade
+    if idade >= 60:
+        score += 3
+    elif idade >= 45:
+        score += 2
+    elif idade >= 30:
+        score += 1
+    
     # Idade
     if idade >= 60:
         score += 3
