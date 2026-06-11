@@ -1,7 +1,31 @@
-import base64
-from pathlib import Path
-
 import streamlit as st
+import base64
+
+# =========================================================
+# FUNDO DA APLICAÇÃO
+# =========================================================
+
+def set_background(image_file="fundo.png"):
+    try:
+        with open(image_file, "rb") as image:
+            encoded = base64.b64encode(image.read()).decode()
+
+        st.markdown(
+            f"""
+            <style>
+            .stApp {{
+                background-image: url("data:image/png;base64,{encoded}");
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;
+                background-attachment: fixed;
+            }}
+            </style>
+            """,
+            unsafe_allow_html=True
+        )
+    except FileNotFoundError:
+        st.warning("Imagem de fundo não encontrada. Verifique se o arquivo 'fundo.png' está na mesma pasta do app.")
 
 # =========================================================
 # CONFIGURAÇÃO DA PÁGINA
@@ -13,106 +37,245 @@ st.set_page_config(
     layout="centered"
 )
 
+set_background()
+
 # =========================================================
-# FUNÇÕES AUXILIARES
+# ESTILO DA PÁGINA
 # =========================================================
 
-def escolher_imagem(*nomes):
-    """
-    Retorna o primeiro arquivo de imagem encontrado na pasta do projeto.
-    Isso permite usar imagens otimizadas, caso existam, ou voltar para as PNG originais.
-    """
-    for nome in nomes:
-        if Path(nome).exists():
-            return nome
-    return None
+st.markdown("""
+<style>
 
+/* Caixa principal branca/translúcida */
+.main > div {
+    background-color: rgba(255,255,255,0.88);
+    padding: 2rem;
+    border-radius: 20px;
+}
 
-@st.cache_data(show_spinner=False)
-def carregar_imagem_base64(image_file):
-    """
-    Carrega a imagem de fundo em Base64 usando cache.
-    Assim, o Streamlit não precisa reprocessar a imagem a cada interação do usuário.
-    """
-    caminho = Path(image_file)
+/* Textos principais pretos */
+html, body, [class*="css"],
+h1, h2, h3, h4, h5, h6,
+p, label {
+    color: black !important;
+}
 
-    with caminho.open("rb") as image:
-        encoded = base64.b64encode(image.read()).decode()
+/* Labels das perguntas */
+label {
+    font-weight: 600 !important;
+}
 
-    extensao = caminho.suffix.lower()
+/* Campos preenchidos pelo usuário */
+.stTextInput input,
+.stNumberInput input {
+    color: white !important;
+    background-color: rgba(20,30,50,0.90) !important;
+    border-radius: 10px !important;
+}
 
-    if extensao in [".jpg", ".jpeg"]:
-        mime_type = "image/jpeg"
-    else:
-        mime_type = "image/png"
+/* Selectbox fechado */
+[data-baseweb="select"] {
+    background-color: rgba(20,30,50,0.90) !important;
+    border-radius: 10px !important;
+}
 
-    return mime_type, encoded
+/* Texto da opção selecionada */
+[data-baseweb="select"] span {
+    color: white !important;
+}
 
+/* Lista de opções aberta */
+ul[role="listbox"] {
+    background-color: rgba(20,30,50,0.95) !important;
+}
 
-def set_background():
-    """
-    Define o fundo da aplicação.
-    Prioriza fundo_otimizado.jpg, caso exista. Se não existir, usa fundo.png.
-    """
-    image_file = escolher_imagem(
-        "fundo_otimizado.jpg",
-        "fundo.jpg",
-        "fundo.png"
-    )
+/* Opções dentro do dropdown */
+ul[role="listbox"] li,
+ul[role="listbox"] li div,
+ul[role="listbox"] li span {
+    color: white !important;
+}
 
-    if image_file is None:
-        st.warning("Imagem de fundo não encontrada. Envie o arquivo 'fundo.png' ou 'fundo_otimizado.jpg'.")
-        return
+/* Placeholder */
+input::placeholder {
+    color: rgba(255,255,255,0.8) !important;
+}
 
-    mime_type, encoded = carregar_imagem_base64(image_file)
+/* Botão */
+.stButton button {
+    background-color: #0b3d5c !important;
+    color: white !important;
+    border-radius: 10px !important;
+    font-weight: 700 !important;
+    border: none !important;
+    padding: 0.6rem 1rem !important;
+}
 
-    st.markdown(
-        f"""
-        <style>
-        .stApp {{
-            background-image: url("data:{mime_type};base64,{encoded}");
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-        }}
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
+/* Texto dentro dos alertas */
+[data-testid="stAlert"] div,
+[data-testid="stAlert"] p {
+    color: black !important;
+}
 
+</style>
+""", unsafe_allow_html=True)
+st.markdown("""
+<style>
 
-def imagem_resultado(tipo):
-    """
-    Retorna a imagem correspondente ao resultado.
-    Prioriza imagens otimizadas se existirem.
-    """
-    if tipo == "baixo":
-        return escolher_imagem("baixo_risco_otimizado.jpg", "baixo_risco.jpg", "baixo_risco.png")
+/* Botão */
 
-    if tipo == "medio":
-        return escolher_imagem("medio_risco_otimizado.jpg", "medio_risco.jpg", "medio_risco.png")
+.stButton > button {
+    background: linear-gradient(90deg,#0b4f7d,#1f7acb) !important;
+    color: white !important;
+    font-size: 22px !important;
+    font-weight: 700 !important;
+    border-radius: 15px !important;
+    height: 60px !important;
+    width: 100% !important;
+    border: none !important;
+}
 
-    if tipo == "alto":
-        return escolher_imagem("alto_risco_otimizado.jpg", "alto_risco.jpg", "alto_risco.png")
+/* Texto interno do botão */
 
-    return None
+.stButton > button p {
+    color: white !important;
+    font-weight: 700 !important;
+}
 
+/* Hover */
 
-def calcular_score(
-    idade,
-    dor_peito,
-    historico_familiar,
-    exercicio,
-    alimentacao,
-    cigarro,
-    alcool,
-    ansiedade,
-    sono
-):
-    """
-    Calcula a pontuação de risco cardiovascular com base nas respostas do usuário.
-    """
+.stButton > button:hover {
+    color: white !important;
+}
+
+.stButton > button:hover p {
+    color: white !important;
+}
+
+</style>
+""", unsafe_allow_html=True)
+# =========================================================
+# TÍTULO
+# =========================================================
+
+st.title("❤️Triagem Inicial de Risco Cardiovascular❤️")
+
+st.write("""
+Este sistema realiza uma triagem inicial de risco cardiovascular com base
+em sintomas, histórico familiar e hábitos de vida.
+""")
+
+st.warning("""
+Este sistema é apenas um protótipo acadêmico e não substitui avaliação médica profissional.
+""")
+
+# =========================================================
+# FORMULÁRIO
+# =========================================================
+
+st.subheader("Informe seus dados")
+
+nome = st.text_input("1. Nome")
+
+idade = st.number_input(
+    "2. Idade",
+    min_value=1,
+    max_value=120,
+    value=20
+)
+
+genero = st.selectbox(
+    "3. Gênero",
+    [
+        "Feminino",
+        "Masculino",
+        "Outro / Prefiro não informar"
+    ]
+)
+
+dor_peito = st.selectbox(
+    "4. Teve dor no peito nos últimos 30 dias?",
+    [
+        "Não",
+        "Sim, leve",
+        "Sim, moderada",
+        "Sim, forte"
+    ]
+)
+
+historico_familiar = st.selectbox(
+    "5. Tem histórico de doença cardiovascular na família?",
+    [
+        "Não",
+        "Sim",
+        "Não sei"
+    ]
+)
+
+exercicio = st.selectbox(
+    "6. Você pratica exercícios físicos?",
+    [
+        "Não pratico",
+        "Sim, 1 a 2 vezes por semana",
+        "Sim, 3 a 4 vezes por semana",
+        "Sim, 5 vezes ou mais por semana"
+    ]
+)
+
+alimentacao = st.selectbox(
+    "7. Em um almoço comum no seu dia a dia, qual opção melhor te atende?",
+    [
+        "Arroz, feijão, salada e frango",
+        "Macarrão, carne e molho de tomate",
+        "Fast food (cachorro-quente, hambúrguer, pizza, etc.)",
+        "Parmegiana de frango"
+    ]
+)
+
+cigarro = st.selectbox(
+    "8. Você faz uso de cigarro?",
+    [
+        "Não",
+        "Sim, raramente",
+        "Sim, algumas vezes por semana",
+        "Sim, todos os dias"
+    ]
+)
+
+alcool = st.selectbox(
+    "9. Você faz uso de bebida alcoólica?",
+    [
+        "Não",
+        "Sim, raramente",
+        "Sim, algumas vezes por semana",
+        "Sim, todos os dias"
+    ]
+)
+
+ansiedade = st.selectbox(
+    "10. Você tem se sentido ansioso frequentemente?",
+    [
+        "Não",
+        "Às vezes",
+        "Frequentemente"
+    ]
+)
+
+sono = st.selectbox(
+    "11. Você está tendo dificuldades para dormir?",
+    [
+        "Não",
+        "Às vezes",
+        "Frequentemente"
+    ]
+)
+
+# =========================================================
+# CÁLCULO DO RISCO
+# =========================================================
+
+if st.button("Calcular risco cardiovascular"):
+
     score = 0
 
     # Idade
@@ -179,290 +342,9 @@ def calcular_score(
     elif sono == "Frequentemente":
         score += 2
 
-    return score
-
-
-# =========================================================
-# FUNDO E ESTILO
-# =========================================================
-
-set_background()
-
-st.markdown(
-    """
-    <style>
-
-    /* Área principal do app */
-    .block-container {
-        background-color: rgba(255, 255, 255, 0.65) !important;
-        padding: 2.5rem !important;
-        border-radius: 24px !important;
-        margin-top: 2rem !important;
-        margin-bottom: 2rem !important;
-        box-shadow: 0px 8px 28px rgba(0,0,0,0.20) !important;
-    }
-
-    /* Textos principais */
-    html, body,
-    h1, h2, h3, h4, h5, h6,
-    p, label, span, div {
-        color: black !important;
-    }
-
-    /* Labels das perguntas */
-    label {
-        font-weight: 700 !important;
-    }
-
-    /* Campos de texto e número */
-    .stTextInput input,
-    .stNumberInput input {
-        color: white !important;
-        background-color: rgba(20,30,50,0.92) !important;
-        border-radius: 12px !important;
-        border: 1px solid rgba(255,255,255,0.20) !important;
-    }
-
-    /* Texto digitado nos campos */
-    .stTextInput input *,
-    .stNumberInput input * {
-        color: white !important;
-    }
-
-    /* Placeholder */
-    input::placeholder {
-        color: rgba(255,255,255,0.80) !important;
-    }
-
-    /* Selectbox fechado */
-    [data-baseweb="select"] {
-        background-color: rgba(20,30,50,0.92) !important;
-        border-radius: 12px !important;
-        border: 1px solid rgba(255,255,255,0.20) !important;
-    }
-
-    /* Texto do selectbox */
-    [data-baseweb="select"] *,
-    [data-baseweb="select"] span,
-    [data-baseweb="select"] div {
-        color: white !important;
-    }
-
-    /* Dropdown aberto */
-    ul[role="listbox"],
-    div[role="listbox"] {
-        background-color: rgba(20,30,50,0.98) !important;
-    }
-
-    /* Opções do dropdown */
-    ul[role="listbox"] li,
-    ul[role="listbox"] li *,
-    div[role="listbox"] div,
-    div[role="listbox"] span {
-        color: white !important;
-    }
-
-    /* Botão do formulário */
-    .stButton > button,
-    .stFormSubmitButton > button {
-        background: linear-gradient(90deg,#0b4f7d,#1f7acb) !important;
-        color: white !important;
-        font-size: 20px !important;
-        font-weight: 800 !important;
-        border-radius: 15px !important;
-        min-height: 58px !important;
-        width: 100% !important;
-        border: none !important;
-        box-shadow: 0px 4px 14px rgba(0,0,0,0.25) !important;
-    }
-
-    /* Texto interno do botão */
-    .stButton > button *,
-    .stFormSubmitButton > button *,
-    .stButton > button p,
-    .stFormSubmitButton > button p {
-        color: white !important;
-        font-weight: 800 !important;
-    }
-
-    /* Hover do botão */
-    .stButton > button:hover,
-    .stFormSubmitButton > button:hover {
-        background: linear-gradient(90deg,#1565a1,#2596e6) !important;
-        color: white !important;
-    }
-
-    .stButton > button:hover *,
-    .stFormSubmitButton > button:hover * {
-        color: white !important;
-    }
-
-    /* Alertas */
-    [data-testid="stAlert"] *,
-    [data-testid="stAlert"] p,
-    [data-testid="stAlert"] div {
-        color: black !important;
-    }
-
-    /* Imagens arredondadas */
-    img {
-        border-radius: 18px !important;
-    }
-
-    </style>
-    """,
-    unsafe_allow_html=True
-)
-
-# =========================================================
-# TÍTULO
-# =========================================================
-
-st.markdown(
-    """
-    <h1 style='text-align:center; color:black;'>
-        ❤️ Triagem Inicial de Risco Cardiovascular ❤️
-    </h1>
-    """,
-    unsafe_allow_html=True
-)
-
-st.write(
-    """
-    Este sistema realiza uma triagem inicial de risco cardiovascular com base
-    em sintomas, histórico familiar e hábitos de vida.
-    """
-)
-
-st.warning(
-    """
-    Este sistema é apenas um protótipo acadêmico e não substitui avaliação médica profissional.
-    """
-)
-
-# =========================================================
-# FORMULÁRIO
-# =========================================================
-
-st.subheader("Informe seus dados")
-
-with st.form("form_triagem_cardiovascular"):
-
-    nome = st.text_input("1. Nome")
-
-    idade = st.number_input(
-        "2. Idade",
-        min_value=1,
-        max_value=120,
-        value=20
-    )
-
-    genero = st.selectbox(
-        "3. Gênero",
-        [
-            "Feminino",
-            "Masculino",
-            "Outro / Prefiro não informar"
-        ]
-    )
-
-    dor_peito = st.selectbox(
-        "4. Teve dor no peito nos últimos 30 dias?",
-        [
-            "Não",
-            "Sim, leve",
-            "Sim, moderada",
-            "Sim, forte"
-        ]
-    )
-
-    historico_familiar = st.selectbox(
-        "5. Tem histórico de doença cardiovascular na família?",
-        [
-            "Não",
-            "Sim",
-            "Não sei"
-        ]
-    )
-
-    exercicio = st.selectbox(
-        "6. Você pratica exercícios físicos?",
-        [
-            "Não pratico",
-            "Sim, 1 a 2 vezes por semana",
-            "Sim, 3 a 4 vezes por semana",
-            "Sim, 5 vezes ou mais por semana"
-        ]
-    )
-
-    alimentacao = st.selectbox(
-        "7. Em um almoço comum no seu dia a dia, qual opção melhor te atende?",
-        [
-            "Arroz, feijão, salada e frango",
-            "Macarrão, carne e molho de tomate",
-            "Fast food (cachorro-quente, hambúrguer, pizza, etc.)",
-            "Parmegiana de frango"
-        ]
-    )
-
-    cigarro = st.selectbox(
-        "8. Você faz uso de cigarro?",
-        [
-            "Não",
-            "Sim, raramente",
-            "Sim, algumas vezes por semana",
-            "Sim, todos os dias"
-        ]
-    )
-
-    alcool = st.selectbox(
-        "9. Você faz uso de bebida alcoólica?",
-        [
-            "Não",
-            "Sim, raramente",
-            "Sim, algumas vezes por semana",
-            "Sim, todos os dias"
-        ]
-    )
-
-    ansiedade = st.selectbox(
-        "10. Você tem se sentido ansioso frequentemente?",
-        [
-            "Não",
-            "Às vezes",
-            "Frequentemente"
-        ]
-    )
-
-    sono = st.selectbox(
-        "11. Você está tendo dificuldades para dormir?",
-        [
-            "Não",
-            "Às vezes",
-            "Frequentemente"
-        ]
-    )
-
-    calcular = st.form_submit_button("Calcular risco cardiovascular")
-
-
-# =========================================================
-# RESULTADO
-# =========================================================
-
-if calcular:
-
-    score = calcular_score(
-        idade=idade,
-        dor_peito=dor_peito,
-        historico_familiar=historico_familiar,
-        exercicio=exercicio,
-        alimentacao=alimentacao,
-        cigarro=cigarro,
-        alcool=alcool,
-        ansiedade=ansiedade,
-        sono=sono
-    )
+    # =====================================================
+    # RESULTADO
+    # =====================================================
 
     st.subheader("Resultado da Triagem")
 
@@ -472,28 +354,28 @@ if calcular:
     st.write(f"Pontuação de risco: **{score} pontos**")
 
     if score <= 7:
-
-        imagem = imagem_resultado("baixo")
-        if imagem:
-            st.image(imagem, use_container_width=True)
+        try:
+            st.image("baixo_risco.png", use_container_width=True)
+        except Exception:
+            pass
 
         st.success("Baixo risco cardiovascular")
         st.write("Recomenda-se manter hábitos saudáveis e realizar check-up de rotina.")
 
     elif score <= 15:
-
-        imagem = imagem_resultado("medio")
-        if imagem:
-            st.image(imagem, use_container_width=True)
+        try:
+            st.image("medio_risco.png", use_container_width=True)
+        except Exception:
+            pass
 
         st.warning("Médio risco cardiovascular")
         st.write("Recomenda-se realizar um novo check-up e, se possível, consultar um cardiologista.")
 
     else:
-
-        imagem = imagem_resultado("alto")
-        if imagem:
-            st.image(imagem, use_container_width=True)
+        try:
+            st.image("alto_risco.png", use_container_width=True)
+        except Exception:
+            pass
 
         st.error("Alto risco cardiovascular")
         st.write("Recomenda-se procurar um cardiologista o mais rápido possível.")
