@@ -186,9 +186,6 @@ idade = st.number_input(
     max_value=120,
     value=0
 )
-    index=None,
-    placeholder="Insira a idade conrrespondente"
-
 genero = st.selectbox(
     "3. Gênero",
     [
