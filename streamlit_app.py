@@ -194,7 +194,7 @@ st.markdown(
 
     /* Área principal do app */
     .block-container {
-        background-color: rgba(255, 255, 255, 0.92) !important;
+        background-color: rgba(255, 255, 255, 0.65) !important;
         padding: 2.5rem !important;
         border-radius: 24px !important;
         margin-top: 2rem !important;
