@@ -182,9 +182,9 @@ nome = st.text_input(
 
 idade = st.number_input(
     "2. Idade",
-    min_value=1,
+    min_value=0,
     max_value=120,
-    value="1"
+    value=0
 )
     index=None,
     placeholder="Insira a idade conrrespondente"
