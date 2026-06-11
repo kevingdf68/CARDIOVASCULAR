@@ -175,14 +175,18 @@ Este sistema é apenas um protótipo acadêmico e não substitui avaliação mé
 
 st.subheader("Informe seus dados")
 
-nome = st.text_input("1. Nome")
+nome = st.text_input("1. Nome"),
+    index=None,
+    placeholder="Insira seu nome"
 
 idade = st.number_input(
     "2. Idade",
     min_value=1,
     max_value=120,
     value=20
-)
+),
+    index=None,
+    placeholder="Insira a idade conrrespondente"
 
 genero = st.selectbox(
     "3. Gênero",
