@@ -190,7 +190,9 @@ genero = st.selectbox(
         "Feminino",
         "Masculino",
         "Outro / Prefiro não informar"
-    ]
+    ],
+    index=None,
+    placeholder="Selecione uma opção"
 )
 
 dor_peito = st.selectbox(
@@ -200,7 +202,9 @@ dor_peito = st.selectbox(
         "Sim, leve",
         "Sim, moderada",
         "Sim, forte"
-    ]
+    ],
+    index=None,
+    placeholder="Selecione uma opção"
 )
 
 historico_familiar = st.selectbox(
@@ -209,7 +213,9 @@ historico_familiar = st.selectbox(
         "Não",
         "Sim",
         "Não sei"
-    ]
+    ],
+    index=None,
+    placeholder="Selecione uma opção"
 )
 
 exercicio = st.selectbox(
@@ -219,7 +225,9 @@ exercicio = st.selectbox(
         "Sim, 1 a 2 vezes por semana",
         "Sim, 3 a 4 vezes por semana",
         "Sim, 5 vezes ou mais por semana"
-    ]
+    ],
+    index=None,
+    placeholder="Selecione uma opção"
 )
 
 alimentacao = st.selectbox(
@@ -229,7 +237,9 @@ alimentacao = st.selectbox(
         "Macarrão, carne e molho de tomate",
         "Fast food (cachorro-quente, hambúrguer, pizza, etc.)",
         "Parmegiana de frango"
-    ]
+    ],
+    index=None,
+    placeholder="Selecione uma opção"
 )
 
 cigarro = st.selectbox(
@@ -239,7 +249,9 @@ cigarro = st.selectbox(
         "Sim, raramente",
         "Sim, algumas vezes por semana",
         "Sim, todos os dias"
-    ]
+    ],
+    index=None,
+    placeholder="Selecione uma opção"
 )
 
 alcool = st.selectbox(
@@ -249,7 +261,9 @@ alcool = st.selectbox(
         "Sim, raramente",
         "Sim, algumas vezes por semana",
         "Sim, todos os dias"
-    ]
+    ],
+    index=None,
+    placeholder="Selecione uma opção"
 )
 
 ansiedade = st.selectbox(
@@ -258,7 +272,9 @@ ansiedade = st.selectbox(
         "Não",
         "Às vezes",
         "Frequentemente"
-    ]
+    ],
+    index=None,
+    placeholder="Selecione uma opção"
 )
 
 sono = st.selectbox(
@@ -267,7 +283,9 @@ sono = st.selectbox(
         "Não",
         "Às vezes",
         "Frequentemente"
-    ]
+    ],
+    index=None,
+    placeholder="Selecione uma opção"
 )
 
 # =========================================================
